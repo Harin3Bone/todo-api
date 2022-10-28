@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  mysql_svc:
+    image: mysql:${MYSQL_VERSION}
+    container_name: ${MYSQL_NAME}
+    ports:
+      - "${MYSQL_PORT}:3306"
+    volumes:
+      - mysql_vol:/var/lib/mysql
+    networks:
+      - network
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      timeout: 20s
+      retries: 3
+    restart: on-failure
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ALLOW_EMPTY_PASSWORD: false
+      TZ: ${TIMEZONE}
+
+volumes:
+  mysql_vol:
+    driver: local
+    name: todo_database
+
+networks:
+  network:
+    external: false
+    driver: bridge
+    name: todo_network
