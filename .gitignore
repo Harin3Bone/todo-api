@@ -36,3 +36,4 @@ build/
 .env
 .jump
 *.log
+application-local.yml
