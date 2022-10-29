@@ -5,7 +5,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 
@@ -24,8 +23,7 @@ public class CardModel {
 
     private String status;
 
-    @Min(0)
-    @Max(5)
+    @Max(value = 5, message = "priority must in range 0 - 5")
     private int priority;
 
     private boolean removeStatus;
