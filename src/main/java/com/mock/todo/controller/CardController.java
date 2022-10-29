@@ -6,6 +6,7 @@ import com.mock.todo.service.impl.CardServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @Slf4j
+@Validated
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/rest/card")
@@ -48,20 +50,34 @@ public class CardController {
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
-    public CardEntity createCard(@RequestBody CardModel cardModel) {
-        return new CardEntity();
+    public CardEntity createCard(@Validated @RequestBody CardModel cardModel) {
+        return cardService.insertCardToBoard(cardModel);
     }
 
-    @PutMapping()
+    @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public CardEntity updateCard(@RequestBody CardModel cardModel) {
-        return new CardEntity();
+    public CardEntity updateCard(@PathVariable String id, @Validated @RequestBody CardModel cardModel) {
+        return cardService.updateCardById(id, cardModel);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void removeCard(@PathVariable String id) {
+    public void removeCardFromBoard(@PathVariable String id) {
         CardEntity cardEntity = cardService.getCardById(id);
-        cardService.removeCardFromBoard(cardEntity);
+        cardService.updateCardRemoveStatus(cardEntity,true);
+    }
+
+    @PutMapping("/trash/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void restoreCardToBoard(@PathVariable String id) {
+        CardEntity cardEntity = cardService.getCardById(id);
+        cardService.updateCardRemoveStatus(cardEntity,false);
+    }
+
+    @DeleteMapping("/trash/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void removeCardFromTrash(@PathVariable String id) {
+        CardEntity cardEntity = cardService.getCardById(id);
+        cardService.removeCardFromTrash(cardEntity);
     }
 }

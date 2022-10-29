@@ -1,8 +1,12 @@
 package com.mock.todo.entity;
 
 import com.mock.todo.enums.CardStatus;
+import com.mock.todo.exception.InvalidException;
+import com.mock.todo.model.CardModel;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
@@ -18,10 +22,14 @@ import javax.persistence.Table;
 import java.sql.Timestamp;
 import java.util.UUID;
 
+import static com.mock.todo.constants.ErrorMessage.INVALID;
+
 @Getter
 @Setter
 @Entity
+@ToString
 @Table(name = "card")
+@RequiredArgsConstructor
 public class CardEntity {
 
     @Id
@@ -56,5 +64,21 @@ public class CardEntity {
 
     @Column(name = "completed_timestamp")
     private Timestamp completedTimestamp;
+
+    public CardEntity(CardModel model) {
+        try {
+            this.id = UUID.fromString(model.getUuid());
+            this.status = CardStatus.valueOf(model.getStatus());
+        } catch (IllegalArgumentException e) {
+            throw new InvalidException(String.format(INVALID,"value of status"));
+        }
+        this.topic = model.getTopic();
+        this.content = model.getContent();
+        this.priority = model.getPriority();
+        this.removeStatus = model.isRemoveStatus();
+        this.createdTimestamp = model.getCreatedTimestamp();
+        this.modifiedTimestamp = model.getModifiedTimestamp();
+        this.completedTimestamp = model.getCompletedTimestamp();
+    }
 
 }
