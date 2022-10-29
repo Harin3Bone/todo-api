@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Getter
-public enum Status {
+public enum CardStatus {
 
     TODO(0),
     IN_PROGRESS(1),
@@ -14,20 +14,20 @@ public enum Status {
 
     private final int keyId;
 
-    private static final Map<Integer, Status> map;
+    private static final Map<Integer, CardStatus> map;
 
     static {
         map = new HashMap<>();
-        for (Status status : Status.values()) {
+        for (CardStatus status : CardStatus.values()) {
             map.put(status.keyId, status);
         }
     }
 
-    Status(int id) {
+    CardStatus(int id) {
         this.keyId = id;
     }
 
-    public static Status findByKey(int i) {
+    public static CardStatus findByKey(int i) {
         return map.get(i);
     }
 

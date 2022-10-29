@@ -1,12 +1,16 @@
 package com.mock.todo.entity;
 
+import com.mock.todo.enums.CardStatus;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -33,8 +37,10 @@ public class CardEntity {
     @Column(name = "content")
     private String content;
 
-    @Column(name = "status")
-    private int status;
+    @Column(name = "status", columnDefinition = "enum('TODO', 'IN_PROGRESS', 'DONE')")
+    @ColumnTransformer(read = "UPPER(status)", write = "LOWER(?)")
+    @Enumerated(EnumType.STRING)
+    private CardStatus status;
 
     @Column(name = "priority")
     private int priority;
