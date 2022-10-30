@@ -28,7 +28,9 @@ public class SecurityConfig {
             "/todo/rest/*"
     };
 
-    private static final String[] AUTH_BLACKLIST = {};
+    private static final String[] AUTH_BLACKLIST = {
+            "/actuator/restart"
+    };
 
     private final ApiKeyProperties apiKeyProperties;
 
