@@ -6,8 +6,24 @@ spring:
     username: ${MYSQL_USER}
     password: ${MYSQL_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    show-sql: false
+    hibernate:
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+  jackson:
+    time-zone: "${TIMEZONE}"
 
 server:
   port: 8080
   servlet:
     context-path: /todo
+
+logging:
+  level:
+    com.mock.todo: info
+
+authorization:
+  keyName: ${SERVICE_KEY}
+  authValue: ${SERVICE_SECRET}
