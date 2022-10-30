@@ -51,9 +51,11 @@ public class CardServiceImpl {
         cardModel.setCreatedTimestamp(currentTimestamp);
         cardModel.setModifiedTimestamp(currentTimestamp);
 
-        if (cardModel.getStatus() == null) {
-            cardModel.setStatus(CardStatus.TODO.toString());
+        String status = CardStatus.TODO.toString();
+        if (cardModel.getStatus() != null) {
+            status = cardModel.getStatus().toUpperCase();
         }
+        cardModel.setStatus(status);
 
         CardEntity cardEntity = new CardEntity(cardModel);
         log.info("insertCardToBoard id: {}", cardEntity.getId());
@@ -75,7 +77,7 @@ public class CardServiceImpl {
         cardEntity.setModifiedTimestamp(currentTimestamp);
         try {
             if (cardModel.getStatus() != null) {
-                CardStatus status = CardStatus.valueOf(cardModel.getStatus());
+                CardStatus status = CardStatus.valueOf(cardModel.getStatus().toUpperCase());
                 if (status.equals(CardStatus.DONE)) {
                     cardEntity.setCompletedTimestamp(currentTimestamp);
                 }
