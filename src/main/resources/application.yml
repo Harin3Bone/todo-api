@@ -23,3 +23,7 @@ server:
 logging:
   level:
     com.mock.todo: info
+
+authorization:
+  keyName: ${SERVICE_KEY}
+  authValue: ${SERVICE_SECRET}
