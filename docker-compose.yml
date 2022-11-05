@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  mysql_svc:
+    image: mysql:${MYSQL_VERSION:-8.0.31}
+    container_name: ${MYSQL_NAME:-todo_database}
+    ports:
+      - "${MYSQL_PORT:-3306}:3306"
+    volumes:
+      - mysql_vol:/var/lib/mysql
+    networks:
+      - network
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      timeout: 20s
+      retries: 3
+    restart: on-failure
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-123456}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-todo}
+      MYSQL_USER: ${MYSQL_USER:-todo_username}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-todo_password}
+      MYSQL_ALLOW_EMPTY_PASSWORD: false
+      TZ: ${TIMEZONE:-Asia/Bangkok}
+  app_svc:
+    image: harin3bone/todo:${SERVICE_VERSION:-latest}
+    build:
+      context: .
+      args:
+        SERVICE_KEY: ${SERVICE_KEY:-userkey}
+        SERVICE_SECRET: ${SERVICE_SECRET:-usersecret}
+        MYSQL_NAME: ${MYSQL_NAME:-todo_database}
+        MYSQL_DATABASE: ${MYSQL_DATABASE:-todo}
+        MYSQL_USER: ${MYSQL_USER:-todo_username}
+        MYSQL_PASSWORD: ${MYSQL_PASSWORD:-todo_password}
+      dockerfile: Dockerfile
+    container_name: ${SERVICE_NAME}
+    ports:
+      - "${SERVICE_PORT:-8080}:8080"
+    networks:
+      - network
+    healthcheck:
+      test: [ "curl", "--fail" ,"--silent", "localhost:8081/actuator/health", "| grep UP || exit 1" ]
+      interval: 40s
+      timeout: 20s
+      retries: 3
+      start_period: 60s
+    restart: on-failure
+    depends_on:
+      - mysql_svc
+    environment:
+      TZ: ${TIMEZONE:-Asia/Bangkok}
+
+volumes:
+  mysql_vol:
+    driver: local
+    name: todo_database
+
+networks:
+  network:
+    external: false
+    driver: bridge
+    name: todo_network
