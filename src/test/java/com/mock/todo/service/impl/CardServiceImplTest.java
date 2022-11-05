@@ -37,6 +37,12 @@ class CardServiceImplTest {
     private CardRepository cardRepository;
 
     @Test
+    void listAllCardSystem() {
+        cardService.listAllCard();
+        verify(cardRepository, times(1)).findAll();
+    }
+
+    @Test
     void listCardOnBoard() {
         cardService.listCardFilterByRemoveStatus(false);
         verify(cardRepository, times(1)).findAllByRemoveStatusIs(false);
@@ -324,7 +330,7 @@ class CardServiceImplTest {
     }
 
     @Test
-    void testRemoveCardFromTrashSuccess(){
+    void testRemoveCardFromTrashSuccess() {
         UUID id = UUID.randomUUID();
         CardEntity cardEntity = new CardEntity();
         cardEntity.setId(id);
@@ -332,12 +338,12 @@ class CardServiceImplTest {
         when(cardRepository.findById(id)).thenReturn(Optional.of(cardEntity));
 
         cardService.removeCardFromTrash(id.toString());
-        verify(cardRepository,times(1)).findById(any());
-        verify(cardRepository,times(1)).deleteById(any());
+        verify(cardRepository, times(1)).findById(any());
+        verify(cardRepository, times(1)).deleteById(any());
     }
 
     @Test
-    void testRemoveCardFromTrashNotFound(){
+    void testRemoveCardFromTrashNotFound() {
         UUID id = UUID.randomUUID();
         CardEntity cardEntity = new CardEntity();
         cardEntity.setId(id);
@@ -346,24 +352,24 @@ class CardServiceImplTest {
 
         assertThatThrownBy(() -> cardService.removeCardFromTrash(id.toString()))
                 .isInstanceOf(NotFoundException.class);
-        verify(cardRepository,times(1)).findById(any());
-        verify(cardRepository,times(0)).deleteById(any());
+        verify(cardRepository, times(1)).findById(any());
+        verify(cardRepository, times(0)).deleteById(any());
     }
 
     @Test
-    void testRemoveCardFromTrashInvalidUUID(){
+    void testRemoveCardFromTrashInvalidUUID() {
         String id = "ABC";
         CardEntity cardEntity = new CardEntity();
         cardEntity.setId(UUID.randomUUID());
 
         assertThatThrownBy(() -> cardService.removeCardFromTrash(id))
                 .isInstanceOf(InvalidException.class);
-        verify(cardRepository,times(0)).findById(any());
-        verify(cardRepository,times(0)).deleteById(any());
+        verify(cardRepository, times(0)).findById(any());
+        verify(cardRepository, times(0)).deleteById(any());
     }
 
     @Test
-    void testRemoveCardFromTrashNotInRemoveStatus(){
+    void testRemoveCardFromTrashNotInRemoveStatus() {
         UUID id = UUID.randomUUID();
         CardEntity cardEntity = new CardEntity();
         cardEntity.setId(id);
@@ -372,8 +378,8 @@ class CardServiceImplTest {
 
         assertThatThrownBy(() -> cardService.removeCardFromTrash(id.toString()))
                 .isInstanceOf(InvalidException.class);
-        verify(cardRepository,times(1)).findById(any());
-        verify(cardRepository,times(0)).deleteById(any());
+        verify(cardRepository, times(1)).findById(any());
+        verify(cardRepository, times(0)).deleteById(any());
     }
 
 }

@@ -30,6 +30,12 @@ public class CardController {
 
     private final CardServiceImpl cardService;
 
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<CardEntity> getAllCardInSystem() {
+        return cardService.listAllCard();
+    }
+
     @GetMapping("/board")
     @ResponseStatus(HttpStatus.OK)
     public List<CardEntity> getAllCardOnBoard() {

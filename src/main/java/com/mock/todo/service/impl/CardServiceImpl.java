@@ -6,6 +6,7 @@ import com.mock.todo.exception.InvalidException;
 import com.mock.todo.exception.NotFoundException;
 import com.mock.todo.model.CardModel;
 import com.mock.todo.repository.CardRepository;
+import com.mock.todo.service.CardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,15 +22,22 @@ import static com.mock.todo.constants.ErrorMessage.NOT_FOUND;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class CardServiceImpl {
+public class CardServiceImpl implements CardService {
 
     private final CardRepository cardRepository;
 
+    @Override
+    public List<CardEntity> listAllCard() {
+        return cardRepository.findAll();
+    }
+
+    @Override
     public List<CardEntity> listCardFilterByRemoveStatus(boolean isRemove) {
         log.info("listCardFilterByRemoveStatus: {}", isRemove);
         return cardRepository.findAllByRemoveStatusIs(isRemove);
     }
 
+    @Override
     public CardEntity getCardById(String id) {
         log.info("getCardById begin, id: {}", id);
         try {
@@ -42,6 +50,7 @@ public class CardServiceImpl {
         }
     }
 
+    @Override
     @Transactional
     public CardEntity insertCardToBoard(CardModel cardModel) {
         log.info("insertCardToBoard begin.");
@@ -64,6 +73,7 @@ public class CardServiceImpl {
         return cardEntity;
     }
 
+    @Override
     @Transactional
     public CardEntity updateCardById(String id, CardModel cardModel) {
         log.info("updateCardById begin.");
@@ -93,6 +103,7 @@ public class CardServiceImpl {
         return cardEntity;
     }
 
+    @Override
     @Transactional
     public void updateCardRemoveStatus(String id, boolean removeStatus) {
         log.info("updateCardRemoveStatus begin, id: {}", id);
@@ -102,6 +113,7 @@ public class CardServiceImpl {
         cardRepository.saveAndFlush(cardEntity);
     }
 
+    @Override
     @Transactional
     public void removeCardFromTrash(String id) {
         CardEntity cardEntity = getCardById(id);
