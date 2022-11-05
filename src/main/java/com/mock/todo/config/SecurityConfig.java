@@ -25,6 +25,7 @@ import static com.mock.todo.constants.ErrorMessage.AUTHORIZE_FAILED;
 public class SecurityConfig {
 
     private static final String[] AUTH_WHITELIST = {
+            "/actuator/health",
             "/todo/rest/*"
     };
 
