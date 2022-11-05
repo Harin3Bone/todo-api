@@ -21,7 +21,7 @@
         <mysql.version>8.0.31</mysql.version>
         <mockito.version>4.8.0</mockito.version>
         <jupiter.version>5.9.0</jupiter.version>
-        <jacoco.version>0.8.5</jacoco.version>
+        <jacoco.version>0.8.8</jacoco.version>
         <spring-security.version>5.7.5</spring-security.version>
     </properties>
     <dependencies>
@@ -168,6 +168,12 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>${jacoco.version}</version>
+                <configuration>
+                    <excludes>
+                        <exclude>com/mock/todo/TodoServiceApplication.class</exclude>
+                        <exclude>com/mock/todo/config/**</exclude>
+                    </excludes>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>

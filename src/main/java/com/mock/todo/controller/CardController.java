@@ -63,21 +63,18 @@ public class CardController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeCardFromBoard(@PathVariable String id) {
-        CardEntity cardEntity = cardService.getCardById(id);
-        cardService.updateCardRemoveStatus(cardEntity,true);
+        cardService.updateCardRemoveStatus(id, true);
     }
 
     @PutMapping("/trash/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void restoreCardToBoard(@PathVariable String id) {
-        CardEntity cardEntity = cardService.getCardById(id);
-        cardService.updateCardRemoveStatus(cardEntity,false);
+        cardService.updateCardRemoveStatus(id, false);
     }
 
     @DeleteMapping("/trash/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeCardFromTrash(@PathVariable String id) {
-        CardEntity cardEntity = cardService.getCardById(id);
-        cardService.removeCardFromTrash(cardEntity);
+        cardService.removeCardFromTrash(id);
     }
 }

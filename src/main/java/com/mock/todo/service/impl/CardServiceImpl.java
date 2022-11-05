@@ -72,7 +72,7 @@ public class CardServiceImpl {
         Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
         CardEntity cardEntity = getCardById(id);
         cardEntity.setTopic(cardModel.getTopic());
-        cardEntity.setContent(cardModel.getTopic());
+        cardEntity.setContent(cardModel.getContent());
         cardEntity.setPriority(cardModel.getPriority());
         cardEntity.setModifiedTimestamp(currentTimestamp);
         try {
@@ -94,22 +94,21 @@ public class CardServiceImpl {
     }
 
     @Transactional
-    public void updateCardRemoveStatus(CardEntity cardEntity, boolean removeStatus) {
-        log.info("updateCardRemoveStatus begin, id: {}", cardEntity.getId());
+    public void updateCardRemoveStatus(String id, boolean removeStatus) {
+        log.info("updateCardRemoveStatus begin, id: {}", id);
+        CardEntity cardEntity = getCardById(id);
         cardEntity.setRemoveStatus(removeStatus);
+        cardEntity.setModifiedTimestamp(new Timestamp(System.currentTimeMillis()));
         cardRepository.saveAndFlush(cardEntity);
     }
 
     @Transactional
-    public void removeCardFromTrash(CardEntity cardEntity) {
-        try {
-            if (!cardEntity.isRemoveStatus()) {
-                throw new InvalidException(String.format(INVALID,"this card not in trash."));
-            }
-            cardRepository.deleteById(cardEntity.getId());
-        } catch (IllegalArgumentException e) {
-            throw new InvalidException(String.format(INVALID,"card id."));
+    public void removeCardFromTrash(String id) {
+        CardEntity cardEntity = getCardById(id);
+        if (!cardEntity.isRemoveStatus()) {
+            throw new InvalidException(String.format(INVALID,"this card not in trash."));
         }
+        cardRepository.deleteById(cardEntity.getId());
     }
 
 }
