@@ -1,14 +1,12 @@
-FROM openjdk:17-alpine as builder
+FROM maven:3.8.5-openjdk-17-slim as builder
 MAINTAINER HARIN3BONE
 
 WORKDIR /workspace/app
 
-COPY mvnw .
-COPY .mvn/ .mvn
 COPY pom.xml .
 COPY src src
 
-RUN ./mvnw clean install -DskipTests
+RUN mvn clean install -DskipTests
 
 FROM openjdk:17-alpine as runner
 MAINTAINER HARIN3BONE
