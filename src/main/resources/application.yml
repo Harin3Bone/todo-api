@@ -17,10 +17,23 @@ server:
   port: 8080
   servlet:
     context-path: /todo
+  forward-headers-strategy: framework
 
 logging:
   level:
     com.mock.todo: info
+
+springdoc:
+  api-docs:
+    enabled: false
+    path: /api-docs
+  swagger-ui:
+    enabled: true
+    use-root-path: true
+    path: /swagger-ui
+    operations-sorter: method
+    tags-sorter: alpha
+  show-actuator: false
 
 authorization:
   keyName: ${SERVICE_KEY}

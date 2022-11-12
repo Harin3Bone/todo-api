@@ -25,8 +25,16 @@ import static com.mock.todo.constants.ErrorMessage.AUTHORIZE_FAILED;
 public class SecurityConfig {
 
     private static final String[] AUTH_WHITELIST = {
+            /* Actuator */
             "/actuator/health",
-            "/todo/rest/*"
+
+            /* OpenAPI */
+            "/api-docs/**",
+            "/swagger-ui/**",
+            "/swagger-resources/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/webjars/**"
     };
 
     private static final String[] AUTH_BLACKLIST = {

@@ -23,6 +23,7 @@
         <jupiter.version>5.9.0</jupiter.version>
         <jacoco.version>0.8.8</jacoco.version>
         <spring-security.version>5.7.5</spring-security.version>
+        <springdoc-openapi.version>1.6.12</springdoc-openapi.version>
     </properties>
     <dependencies>
         <!-- REST -->
@@ -73,6 +74,23 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-web</artifactId>
             <version>${spring-security.version}</version>
+        </dependency>
+
+        <!-- Swagger (OpenAPI) -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>${springdoc-openapi.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-data-rest</artifactId>
+            <version>${springdoc-openapi.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-security</artifactId>
+            <version>${springdoc-openapi.version}</version>
         </dependency>
 
         <!-- Database -->
