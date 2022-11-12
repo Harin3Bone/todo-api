@@ -4,6 +4,8 @@ import com.mock.todo.entity.CardEntity;
 import com.mock.todo.model.CardModel;
 import com.mock.todo.service.impl.CardServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,10 +27,10 @@ import java.util.List;
 @Slf4j
 @Validated
 @RestController
+@Tag(name = "Card")
 @RequiredArgsConstructor
 @RequestMapping("/rest/card")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-@Tag(name = "Card")
 public class CardController {
 
     private final CardServiceImpl cardService;
@@ -55,6 +57,7 @@ public class CardController {
     }
 
     @Operation(summary = "Get card by ID", description = "Get one card by UUID.")
+    @Parameter(name = "id", description = "Card ID", in = ParameterIn.PATH)
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public CardEntity getCardById(@PathVariable String id) {
@@ -69,6 +72,7 @@ public class CardController {
     }
 
     @Operation(summary = "Update card by ID", description = "Update card by UUID.")
+    @Parameter(name = "id", description = "Card ID", in = ParameterIn.PATH)
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public CardEntity updateCard(@PathVariable String id, @Validated @RequestBody CardModel cardModel) {
@@ -76,6 +80,7 @@ public class CardController {
     }
 
     @Operation(summary = "Delete available card by ID", description = "Remove card from board. (Soft delete)")
+    @Parameter(name = "id", description = "Card ID", in = ParameterIn.PATH)
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeCardFromBoard(@PathVariable String id) {
@@ -83,6 +88,7 @@ public class CardController {
     }
 
     @Operation(summary = "Restore unavailable card by ID", description = "Restore card from trash to board.")
+    @Parameter(name = "id", description = "Card ID", in = ParameterIn.PATH)
     @PutMapping("/trash/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void restoreCardToBoard(@PathVariable String id) {
@@ -90,6 +96,7 @@ public class CardController {
     }
 
     @Operation(summary = "Delete unavailable card by ID", description = "Delete card from trash (Hard delete)")
+    @Parameter(name = "id", description = "Card ID", in = ParameterIn.PATH)
     @DeleteMapping("/trash/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeCardFromTrash(@PathVariable String id) {
