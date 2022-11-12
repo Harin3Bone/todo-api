@@ -12,8 +12,11 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.RegexRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.regex.Pattern;
 
 import static com.mock.todo.constants.ErrorMessage.AUTHORIZE_FAILED;
@@ -48,7 +51,14 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain configure(HttpSecurity http) throws Exception {
+    public SecurityFilterChain authorizeConfigure(HttpSecurity http) throws Exception {
+        // Configure allow cors
+        CorsConfiguration corsSetup = new CorsConfiguration();
+        corsSetup.setAllowedOriginPatterns(Arrays.asList("http://**","https://**"));
+        corsSetup.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "TRACE", "OPTIONS"));
+        UrlBasedCorsConfigurationSource corsConfigure = new UrlBasedCorsConfigurationSource();
+        corsConfigure.registerCorsConfiguration("/**", corsSetup);
+
         // Configure allow methods
         RequestMatcher requestMatcher = new RequestMatcher() {
             private final Pattern allowedMethods = Pattern.compile("^(GET|POST|PUT|DELETE|PATCH|HEAD|TRACE|OPTIONS)$");
@@ -71,13 +81,15 @@ public class SecurityConfig {
             return authentication;
         });
 
-        return http.csrf().requireCsrfProtectionMatcher(requestMatcher)
-                .and().antMatcher("/**").sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().addFilter(filter).authorizeHttpRequests()
+        return http
+                .cors().configurationSource(corsConfigure).and()
+                .csrf().requireCsrfProtectionMatcher(requestMatcher).and()
+                .antMatcher("/**").sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .addFilter(filter).authorizeHttpRequests()
                 .antMatchers(AUTH_WHITELIST).permitAll()
                 .antMatchers(AUTH_BLACKLIST).denyAll()
-                .anyRequest().authenticated()
-                .and().build();
+                .anyRequest().authenticated().and()
+                .build();
     }
 
 }
