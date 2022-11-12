@@ -17,6 +17,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.regex.Pattern;
 
 import static com.mock.todo.constants.ErrorMessage.AUTHORIZE_FAILED;
@@ -54,7 +55,8 @@ public class SecurityConfig {
     public SecurityFilterChain authorizeConfigure(HttpSecurity http) throws Exception {
         // Configure allow cors
         CorsConfiguration corsSetup = new CorsConfiguration();
-        corsSetup.setAllowedOriginPatterns(Arrays.asList("http://**","https://**"));
+        corsSetup.setAllowedOrigins(Collections.singletonList("*"));
+        corsSetup.setAllowedHeaders(Collections.singletonList("*"));
         corsSetup.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "TRACE", "OPTIONS"));
         UrlBasedCorsConfigurationSource corsConfigure = new UrlBasedCorsConfigurationSource();
         corsConfigure.registerCorsConfiguration("/**", corsSetup);
