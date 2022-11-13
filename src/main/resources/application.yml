@@ -25,7 +25,7 @@ logging:
 
 springdoc:
   api-docs:
-    enabled: false
+    enabled: true
     path: /api-docs
   swagger-ui:
     enabled: true
@@ -36,5 +36,5 @@ springdoc:
   show-actuator: false
 
 authorization:
-  keyName: ${SERVICE_KEY}
+  keyName: "X-API-KEY"
   authValue: ${SERVICE_SECRET}

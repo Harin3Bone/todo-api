@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @SecurityScheme(
-        paramName = "userkey",
+        paramName = "X-API-KEY",
         description = "user key to authenticate",
         name = "Authorization",
         in = SecuritySchemeIn.HEADER,
@@ -19,7 +19,7 @@ import org.springframework.context.annotation.Configuration;
 @OpenAPIDefinition(info = @Info(
         title = "Todo Application",
         description = "Documentation for Todo Application",
-        version = "0.1.0"),
+        version = "0.1.1"),
         security = { @SecurityRequirement(name = "Authorization") })
 public class OpenAPIConfig {
 }

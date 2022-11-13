@@ -1,6 +1,6 @@
 package com.mock.todo.config;
 
-import com.mock.todo.config.properties.ApiKeyProperties;
+import com.mock.todo.config.properties.AuthProperties;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -45,9 +45,9 @@ public class SecurityConfig {
             "/actuator/restart"
     };
 
-    private final ApiKeyProperties apiKeyProperties;
+    private final AuthProperties apiKeyProperties;
 
-    public SecurityConfig(ApiKeyProperties apiKeyProperties) {
+    public SecurityConfig(AuthProperties apiKeyProperties) {
         this.apiKeyProperties = apiKeyProperties;
     }
 

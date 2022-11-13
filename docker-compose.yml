@@ -27,7 +27,6 @@ services:
     build:
       context: .
       args:
-        SERVICE_KEY: ${SERVICE_KEY:-userkey}
         SERVICE_SECRET: ${SERVICE_SECRET:-usersecret}
         MYSQL_NAME: ${MYSQL_NAME:-todo_database}
         MYSQL_DATABASE: ${MYSQL_DATABASE:-todo}
