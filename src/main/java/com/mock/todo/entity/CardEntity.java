@@ -3,6 +3,7 @@ package com.mock.todo.entity;
 import com.mock.todo.enums.CardStatus;
 import com.mock.todo.exception.InvalidException;
 import com.mock.todo.model.CardModel;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -28,6 +29,7 @@ import static com.mock.todo.constants.ErrorMessage.INVALID;
 @ToString
 @Table(name = "card")
 @RequiredArgsConstructor
+@Schema(name = "Card Response")
 public class CardEntity {
 
     @Id
