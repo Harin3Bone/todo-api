@@ -9,9 +9,14 @@ spring:
   jpa:
     show-sql: false
     hibernate:
+      ddl-auto: none
       naming:
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
         physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:sql/schema.sql
 
 server:
   port: 8080
