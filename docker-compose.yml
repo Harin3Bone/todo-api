@@ -23,7 +23,7 @@ services:
       MYSQL_ALLOW_EMPTY_PASSWORD: false
       TZ: ${TIMEZONE:-Asia/Bangkok}
   app_svc:
-    image: harin3bone/todo:${SERVICE_VERSION:-latest}
+    image: harin3bone/todo:0.2.0
     build:
       context: .
       args:
