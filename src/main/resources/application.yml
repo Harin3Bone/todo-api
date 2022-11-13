@@ -9,19 +9,37 @@ spring:
   jpa:
     show-sql: false
     hibernate:
+      ddl-auto: none
       naming:
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
         physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:sql/schema.sql
 
 server:
   port: 8080
   servlet:
     context-path: /todo
+  forward-headers-strategy: framework
 
 logging:
   level:
     com.mock.todo: info
 
+springdoc:
+  api-docs:
+    enabled: true
+    path: /api-docs
+  swagger-ui:
+    enabled: true
+    use-root-path: true
+    path: /swagger-ui
+    operations-sorter: method
+    tags-sorter: alpha
+  show-actuator: false
+
 authorization:
-  keyName: ${SERVICE_KEY}
+  keyName: "X-API-KEY"
   authValue: ${SERVICE_SECRET}

@@ -59,6 +59,7 @@ public class CardServiceImpl implements CardService {
         cardModel.setUuid(UUID.randomUUID().toString());
         cardModel.setCreatedTimestamp(currentTimestamp);
         cardModel.setModifiedTimestamp(currentTimestamp);
+        cardModel.setRemoveStatus(false);
 
         String status = CardStatus.TODO.toString();
         if (cardModel.getStatus() != null) {
