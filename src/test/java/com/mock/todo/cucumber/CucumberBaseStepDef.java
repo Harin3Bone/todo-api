@@ -9,7 +9,11 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.cucumber.spring.CucumberContextConfiguration;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.mockito.InjectMocks;
+import org.skyscreamer.jsonassert.JSONAssert;
+import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -69,9 +73,19 @@ public class CucumberBaseStepDef {
         assertEquals(expectedStatus, responseEntity.getStatusCodeValue(), errMsg);
     }
 
-    @And("the client receive result are as follows")
-    public void theClientReceiveResultAs(String expectedResponse) {
-        assertEquals(expectedResponse, responseEntity.getBody());
+    @And("the client receive result in {string} format are as follows")
+    public void theClientReceiveResultAs(String jsonFormat, String expectedResponse) {
+        if (jsonFormat.equals("Object")) {
+            JSONObject expect = new JSONObject(expectedResponse);
+            JSONObject actual = new JSONObject(responseEntity.getBody());
+            JSONAssert.assertEquals(expect, actual, JSONCompareMode.STRICT);
+        }
+
+        if (jsonFormat.equals("Array")) {
+            int expect = Integer.parseInt(expectedResponse);
+            int actual = new JSONArray(responseEntity.getBody()).length();
+            assertEquals(expect,actual);
+        }
     }
 
 }
