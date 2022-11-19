@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -14,7 +13,6 @@ import java.sql.Timestamp;
 
 @Getter
 @Setter
-@ToString
 @Schema(name = "Card Request")
 public class CardModel {
 
