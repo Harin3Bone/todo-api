@@ -26,17 +26,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Slf4j
 @CucumberContextConfiguration
-@ContextConfiguration(classes = {TodoBaseStepDef.Config.class})
+@ContextConfiguration(
+        initializers = {CucumberInitializer.class},
+        classes = {CucumberBaseStepDef.Config.class}
+)
 @SpringBootTest(classes = TodoServiceApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class TodoBaseStepDef {
+public class CucumberBaseStepDef {
 
     @Autowired
     private AuthProperties authProperties;
 
     @Autowired
     private TestRestTemplate testRestTemplate;
-
-    private static final String BASE_URL = "/todo";
 
     private ResponseEntity<String> responseEntity;
 
@@ -59,7 +60,7 @@ public class TodoBaseStepDef {
 
     @When("the client call {string} path {string}")
     public void clientCallRequest(String method, String path) {
-        responseEntity = testRestTemplate.exchange(BASE_URL + path, HttpMethod.valueOf(method), getAuthEntity(), String.class);
+        responseEntity = testRestTemplate.exchange(path, HttpMethod.valueOf(method), getAuthEntity(), String.class);
     }
 
     @Then("the client receive status code of {int}")
