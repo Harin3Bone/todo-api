@@ -56,7 +56,7 @@ Scenario: 05 - Get card by ID failed not found
   """
   {
     "errorList": [],
-    "message": "Card not found for id: fd33b26c-00ee-4af2-9097-b7615593f009.",
+    "message": "Card not found for id: fd33b26c-00ee-4af2-9097-b7615593f009",
     "status": 400
   }
   """
@@ -68,7 +68,7 @@ Scenario: 06 - Get card by ID failed invalid ID
   """
   {
     "errorList": [],
-    "message": "Invalid card id.",
+    "message": "Invalid card id",
     "status": 400
   }
   """
