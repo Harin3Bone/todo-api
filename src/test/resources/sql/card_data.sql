@@ -17,4 +17,5 @@ INSERT INTO todo.card (id, topic, content, priority, status, remove_status, crea
 -- Delete Script
 INSERT INTO todo.card (id, topic, content, priority, status, remove_status, created_timestamp, modified_timestamp, completed_timestamp) VALUES
 ('70a6a450-14cf-4f73-84ea-091343d500e2', 'DELETE Card A', 'DELETE Content', 5, 'done', 0, '2022-10-29 14:22:28', '2022-10-29 14:48:04', '2022-11-01 18:00:10'),
-('8435d308-ffbc-419b-b8d3-45ffe56d032a', 'DELETE Card B', 'DELETE Content', 3, 'todo', 1, '2022-10-29 14:22:28', '2022-10-29 14:48:04', null);
+('8435d308-ffbc-419b-b8d3-45ffe56d032a', 'DELETE Card B', 'DELETE Content', 3, 'todo', 1, '2022-10-29 14:22:28', '2022-10-29 14:48:04', null),
+('06818097-5b84-4591-acb6-62b7d6623770', 'DELETE Card C', 'DELETE Content', 1, 'todo', 0, '2022-10-29 14:22:28', '2022-10-29 14:48:04', null);
