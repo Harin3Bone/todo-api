@@ -14,7 +14,6 @@ public class CucumberInitializer implements ApplicationContextInitializer<Config
     private static final MySQLContainer<?> mySqlContainer = new MySQLContainer<>(MYSQL_IMAGE);
 
     private static void initTestContainers() {
-        mySqlContainer.withReuse(true);
         mySqlContainer.withUsername("todo_username");
         mySqlContainer.withPassword("todo_password");
         mySqlContainer.withDatabaseName("todo");

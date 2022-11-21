@@ -88,7 +88,7 @@ public class CardController {
     @Operation(summary = "Restore unavailable card by ID", description = "Restore card from trash to board.")
     @Parameter(name = "id", description = "Card ID", in = ParameterIn.PATH)
     @PutMapping("/trash/{id}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void restoreCardToBoard(@PathVariable String id) {
         cardService.updateCardRemoveStatus(id, false);
     }

@@ -22,8 +22,8 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.test.context.ContextConfiguration;
 
 import java.util.TimeZone;
@@ -66,12 +66,14 @@ public class CucumberBaseStepDef {
     public void clientCallRequest(String method, String path) {
         tmpMethod = HttpMethod.valueOf(method);
         responseEntity = testRestTemplate.exchange(path, HttpMethod.valueOf(method), getAuthEntity(null), String.class);
+        log.info("clientCallRequest method: {}, status: {}, response: {}", method, responseEntity.getBody(), responseEntity.getStatusCode());
     }
 
     @When("the client call {string} path {string} with body")
     public void clientCallRequestWithBody(String method, String path, String body) {
         tmpMethod = HttpMethod.valueOf(method);
         responseEntity = testRestTemplate.exchange(path, tmpMethod, getAuthEntity(body), String.class);
+        log.info("clientCallRequestWithBody method: {}, status: {}, response: {}", method, responseEntity.getBody(), responseEntity.getStatusCode());
     }
 
     @Then("the client receive status code of {int}")
@@ -87,18 +89,8 @@ public class CucumberBaseStepDef {
             JSONObject actual = new JSONObject(responseEntity.getBody());
             log.debug("EXPECTED: {}", expect);
             log.debug("ACTUAL: {}", actual);
-            if ((tmpMethod.matches("POST") || tmpMethod.matches("PUT")) &&
-                    responseEntity.getStatusCode().is2xxSuccessful()) {
-                // Ignored ID for created new card
-                expect.put("id", JSONObject.NULL);
-                actual.put("id", JSONObject.NULL);
-
-                // Ignored Created and Modified timestamp
-                actual.put("createdTimestamp","");
-                actual.put("modifiedTimestamp","");
-                actual.put("completedTimestamp",JSONObject.NULL);
-            }
-            JSONAssert.assertEquals(expect, actual, JSONCompareMode.STRICT);
+            prepareBodyForAssertObject(expect, actual);
+            JSONAssert.assertEquals(expect, actual, JSONCompareMode.LENIENT);
         }
 
         if (jsonFormat.equals("Array")) {
@@ -108,11 +100,30 @@ public class CucumberBaseStepDef {
         }
     }
 
+    private void prepareBodyForAssertObject(JSONObject expect, JSONObject actual) {
+        HttpStatus statusCode = responseEntity.getStatusCode();
+        if (statusCode.is2xxSuccessful()) {
+            if (tmpMethod.matches("POST")) {
+                // Ignored ID for created new card
+                expect.put("id", JSONObject.NULL);
+                actual.put("id", JSONObject.NULL);
+            }
+
+            // Ignored Timestamp
+            expect.put("createdTimestamp", "");
+            expect.put("modifiedTimestamp", "");
+            expect.put("completedTimestamp", JSONObject.NULL);
+            actual.put("createdTimestamp", "");
+            actual.put("modifiedTimestamp", "");
+            actual.put("completedTimestamp", JSONObject.NULL);
+        }
+    }
+
     @And("server remove recently created or updated card")
     public void theServerRemoveRecentCard() {
         JSONObject json = new JSONObject(responseEntity.getBody());
         String id = json.getString("id");
-        cardService.updateCardRemoveStatus(id,true);
+        cardService.updateCardRemoveStatus(id, true);
         cardService.removeCardFromTrash(id);
     }
 
