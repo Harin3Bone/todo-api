@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Getter
 @Setter
 @ConfigurationProperties(prefix = "authorization")
-public class ApiKeyProperties {
+public class AuthProperties {
 
     private String keyName;
     private String authValue;

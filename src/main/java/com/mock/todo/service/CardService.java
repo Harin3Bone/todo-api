@@ -10,7 +10,6 @@ public interface CardService {
 
     List<CardEntity> listAllCard();
     List<CardEntity> listCardFilterByRemoveStatus(boolean isRemove);
-
     CardEntity getCardById(String id);
 
     @Transactional

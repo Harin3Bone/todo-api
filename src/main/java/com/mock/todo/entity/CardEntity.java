@@ -3,10 +3,10 @@ package com.mock.todo.entity;
 import com.mock.todo.enums.CardStatus;
 import com.mock.todo.exception.InvalidException;
 import com.mock.todo.model.CardModel;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
@@ -15,8 +15,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.sql.Timestamp;
@@ -27,16 +25,15 @@ import static com.mock.todo.constants.ErrorMessage.INVALID;
 @Getter
 @Setter
 @Entity
-@ToString
 @Table(name = "card")
 @RequiredArgsConstructor
+@Schema(name = "Card Response")
 public class CardEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    @Column(name = "id")
     @Type(type = "uuid-char")
+    @Column(name = "id")
+    @GenericGenerator(name = "uuid2", strategy = "uuid2")
     private UUID id;
 
     @Column(name = "topic")

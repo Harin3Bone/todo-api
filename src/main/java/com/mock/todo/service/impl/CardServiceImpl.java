@@ -46,7 +46,7 @@ public class CardServiceImpl implements CardService {
             );
         } catch (IllegalArgumentException e) {
             log.error("getCardById message: {}", e.getMessage());
-            throw new InvalidException(String.format(INVALID,"card id."));
+            throw new InvalidException(String.format(INVALID,"card id"));
         }
     }
 
@@ -59,6 +59,7 @@ public class CardServiceImpl implements CardService {
         cardModel.setUuid(UUID.randomUUID().toString());
         cardModel.setCreatedTimestamp(currentTimestamp);
         cardModel.setModifiedTimestamp(currentTimestamp);
+        cardModel.setRemoveStatus(false);
 
         String status = CardStatus.TODO.toString();
         if (cardModel.getStatus() != null) {
@@ -118,7 +119,7 @@ public class CardServiceImpl implements CardService {
     public void removeCardFromTrash(String id) {
         CardEntity cardEntity = getCardById(id);
         if (!cardEntity.isRemoveStatus()) {
-            throw new InvalidException(String.format(INVALID,"this card not in trash."));
+            throw new InvalidException(String.format(INVALID,"this card not in trash"));
         }
         cardRepository.deleteById(cardEntity.getId());
     }
