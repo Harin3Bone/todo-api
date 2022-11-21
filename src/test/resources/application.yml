@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+logging:
+  level:
+    com.mock.todo: debug
+
+authorization:
+  keyName: "X-API-KEY"
+  authValue: "X-API-SECRET"

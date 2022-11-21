@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
@@ -26,7 +25,6 @@ import static com.mock.todo.constants.ErrorMessage.INVALID;
 @Getter
 @Setter
 @Entity
-@ToString
 @Table(name = "card")
 @RequiredArgsConstructor
 @Schema(name = "Card Response")
